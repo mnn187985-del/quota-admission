@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระบบรับสมัคร | วิทยาลัยเทคนิคท่าหลวงซีเมนต์ไทยอนุสรณ์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{--ink:#e9eefc;--mut:#8e9ccb;--bg:#071029;--card:#0f1a3c;--line:#202e66;--pri:#f2b632;--pri2:#1a2a5f;--acc:#4d8dff;--ok:#2ee6a6;--bad:#ff6b6b;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;background:var(--bg);background-image:linear-gradient(#4d8dff0d 1px,transparent 1px),linear-gradient(90deg,#4d8dff0d 1px,transparent 1px);background-size:34px 34px;color:var(--ink);display:flex;min-height:100vh}
+aside{width:250px;background:#050b20;border-right:1px solid var(--line);color:#fff;padding:24px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;gap:12px;align-items:center;padding:0 8px 20px}
+.brand svg{width:40px;height:40px;flex:none}.brand b{display:block;font-size:14px;line-height:1.35}.brand span{display:block;font-size:12px;color:var(--pri);margin-top:2px}
+aside button{all:unset;cursor:pointer;padding:11px 14px;border-radius:10px;font-size:15px;color:#b8c3e6;display:flex;gap:10px}
+aside button:hover{background:#4d8dff1f;color:#fff}
+aside button.on{background:var(--pri);color:#0a1330;font-weight:600}
+aside button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sp{flex:1}
+main{flex:1;padding:28px 32px;min-width:0}
+.prompt{font-family:'JetBrains Mono',monospace;color:var(--pri);font-size:13px;margin-bottom:6px}
+.prompt::after{content:'_';animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+h1{font-size:27px;margin:0 0 2px}.coll{color:var(--pri);font-weight:600;margin:0 0 4px}.sub{color:var(--mut);margin:0 0 22px}
+.view{display:none}.view.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:16px}
+.card{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid var(--line)}
+.kpi b{font-family:'JetBrains Mono',monospace;font-size:34px;display:block;line-height:1.15}.kpi span{color:var(--mut);font-size:14px}
+.kpi.hero{background:linear-gradient(135deg,#f2b632,#ffd674);color:#0a1330;border:0}.kpi.hero span{color:#3d2f05;font-weight:500}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.card h3{margin:0 0 12px;font-size:16px}
+.ch{position:relative;height:310px}
+.btn{all:unset;cursor:pointer;background:var(--pri);color:#0a1330;padding:10px 18px;border-radius:10px;font-weight:600;font-size:14px;display:inline-block}
+.btn:hover{filter:brightness(1.08)}.btn.g{background:var(--pri2);color:#ffd674}.btn.o{background:var(--acc);color:#fff}.btn.sm{padding:6px 11px;font-size:13px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+input,select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#0a1330;color:var(--ink);width:100%;color-scheme:dark}
+select option{background:#0f1a3c;color:#e9eefc}
+.bar input,.bar select{width:auto;flex:1;min-width:150px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--mut);font-weight:500;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border:0}tbody tr:hover{background:#4d8dff10}
+.tag{padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;border:0}
+.s0{background:#f2b63226;color:#ffd674}.s1{background:#ff6b6b26;color:#ff9a9a}.s2{background:#4d8dff26;color:#9cc0ff}.s3{background:#2ee6a626;color:#7df2cb}
+td select{padding:5px 8px;width:auto;font-size:13px}
+.empty{text-align:center;padding:40px;color:var(--mut)}
+form .fs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+form h3{margin:6px 0 12px;color:var(--pri)}
+label{font-size:13px;color:var(--mut);display:block;margin-bottom:5px;font-weight:500}
+label i{color:var(--bad);font-style:normal}
+.err{color:var(--bad);font-size:12px;min-height:16px;margin-top:3px}
+.photo{display:flex;gap:14px;align-items:center}
+.photo img{width:90px;height:116px;object-fit:cover;border-radius:10px;background:var(--pri2);border:1px dashed var(--pri)}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--pri);color:#0a1330;font-weight:600;padding:12px 20px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:9}
+#toast.on{opacity:1;transform:none}
+#pdfbox{position:fixed;left:-10000px;top:0}
+.doc{width:794px;background:#fff;color:#000;padding:44px 52px;font-family:'IBM Plex Sans Thai',sans-serif;font-size:14px;line-height:1.6;border-top:10px solid #0b1a4a}
+.doc h2{text-align:center;margin:0;font-size:20px;color:#0b1a4a}.doc .c{text-align:center;margin:0 0 4px}
+.doc table{border:1px solid #333;margin-top:14px;width:100%;border-collapse:collapse}.doc td,.doc th{border:1px solid #333;padding:6px 10px;white-space:normal;color:#000}
+.doc th{background:#fdf1cc;width:26%;text-align:left;font-weight:600}
+.doc .ph{position:absolute;right:52px;top:54px;width:96px;height:124px;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center;overflow:hidden}
+.doc .ph img{width:100%;height:100%;object-fit:cover}
+.sig{display:flex;justify-content:space-around;margin-top:46px;text-align:center}
+@media(max-width:860px){body{flex-direction:column}aside{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;padding:12px}.brand{width:100%}.sp{display:none}main{padding:20px 16px}.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l15 9v16l-15 9L5 28V12z" fill="#0f1a3c" stroke="#f2b632" stroke-width="2"/><path d="M16 15l-5 5 5 5M24 15l5 5-5 5" fill="none" stroke="#4d8dff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>วิทยาลัยเทคนิคท่าหลวง<br>ซีเมนต์ไทยอนุสรณ์</b><span id="brandSub"></span></div></div>
+  <button data-v="dash" class="on">📊 แดชบอร์ด</button>
+  <button data-v="list">📋 รายชื่อผู้สมัคร</button>
+  <button data-v="form">✏️ กรอกใบสมัคร</button>
+  <div class="sp"></div>
+  <button id="bSeed">🧪 โหลดข้อมูลตัวอย่าง</button>
+  <button id="bBackup">💾 สำรองข้อมูล (JSON)</button>
+  <button id="bRestore">📥 นำเข้าข้อมูล</button>
+  <input type="file" id="fRestore" accept=".json" hidden>
+</aside>
+
+<main>
+<section class="view on" id="v-dash">
+  <div class="prompt">&gt; admission.dashboard --live</div><h1>แดชบอร์ดการรับสมัคร</h1><p class="coll">วิทยาลัยเทคนิคท่าหลวงซีเมนต์ไทยอนุสรณ์</p><p class="sub" id="dsub"></p>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="card"><h3>จำนวนผู้สมัครแยกตามแผนกวิชา</h3><div class="ch"><canvas id="cDept"></canvas></div></div>
+    <div class="card"><h3>สถานะการสมัคร</h3><div class="ch"><canvas id="cStat"></canvas></div></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>ผู้สมัครรายวัน (14 วันล่าสุด)</h3><div class="ch"><canvas id="cDay"></canvas></div></div>
+    <div class="card"><h3>ระดับชั้น</h3><div class="ch"><canvas id="cLvl"></canvas></div></div>
+  </div>
+</section>
+
+<section class="view" id="v-list">
+  <h1>รายชื่อผู้สมัคร</h1><p class="sub">ค้นหา กรอง เปลี่ยนสถานะ แก้ไข และพิมพ์ใบสมัครเป็น PDF</p>
+  <div class="bar">
+    <input id="q" placeholder="ค้นหาชื่อ / เลขบัตร / เลขที่ใบสมัคร">
+    <select id="fLvl"><option value="">ทุกระดับชั้น</option></select>
+    <select id="fDept"><option value="">ทุกแผนก</option></select>
+    <select id="fSt"><option value="">ทุกสถานะ</option></select>
+    <button class="btn g" id="bCsv">ส่งออก CSV</button>
+  </div>
+  <div class="card tw"><table><thead><tr><th>เลขที่</th><th>ชื่อ-สกุล</th><th>ระดับ</th><th>แผนกวิชา</th><th>โรงเรียนเดิม</th><th>สถานะ</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+</section>
+
+<section class="view" id="v-form">
+  <h1 id="ftitle">กรอกใบสมัคร</h1><p class="sub">ช่องที่มี <span style="color:var(--bad)">*</span> จำเป็นต้องกรอก</p>
+  <form class="card" id="f" novalidate>
+    <h3>ข้อมูลที่สมัคร</h3>
+    <div class="fs">
+      <div><label>ระดับชั้น <i>*</i></label><select name="level" required></select><div class="err"></div></div>
+      <div><label>แผนกวิชา <i>*</i></label><select name="dept" required></select><div class="err"></div></div>
+      <div><label>ช่องทางที่รู้จักวิทยาลัย</label><select name="source"></select></div>
+    </div>
+    <h3>ข้อมูลส่วนตัว</h3>
+    <div class="fs">
+      <div><label>คำนำหน้า <i>*</i></label><select name="prefix" required><option>นาย</option><option>นางสาว</option><option>เด็กชาย</option><option>เด็กหญิง</option></select></div>
+      <div><label>ชื่อ <i>*</i></label><input name="fname" required><div class="err"></div></div>
+      <div><label>นามสกุล <i>*</i></label><input name="lname" required><div class="err"></div></div>
+      <div><label>เลขบัตรประชาชน 13 หลัก <i>*</i></label><input name="cid" inputmode="numeric" maxlength="13" required><div class="err"></div></div>
+      <div><label>วันเดือนปีเกิด <i>*</i></label><input type="date" name="dob" required><div class="err"></div></div>
+      <div><label>เบอร์โทรศัพท์ 10 หลัก <i>*</i></label><input name="tel" inputmode="numeric" maxlength="10" required><div class="err"></div></div>
+      <div><label>จังหวัด</label><input name="prov"></div>
+      <div style="grid-column:1/-1"><label>ที่อยู่ตามทะเบียนบ้าน</label><input name="addr"></div>
+    </div>
+    <h3>ประวัติการศึกษา</h3>
+    <div class="fs">
+      <div><label>โรงเรียน/สถานศึกษาเดิม <i>*</i></label><input name="school" required><div class="err"></div></div>
+      <div><label>เกรดเฉลี่ยสะสม (GPA)</label><input name="gpa" type="number" step="0.01" min="0" max="4"></div>
+    </div>
+    <h3>ผู้ปกครอง</h3>
+    <div class="fs">
+      <div><label>ชื่อ-สกุลผู้ปกครอง</label><input name="gname"></div>
+      <div><label>ความสัมพันธ์</label><input name="grel"></div>
+      <div><label>เบอร์ผู้ปกครอง</label><input name="gtel" inputmode="numeric" maxlength="10"></div>
+    </div>
+    <h3>รูปถ่าย</h3>
+    <div class="photo"><img id="pimg" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><div><input type="file" id="pfile" accept="image/jpeg,image/png"><div class="err" style="color:var(--mut)">JPG / PNG ไม่เกิน 3 MB</div></div></div>
+    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+      <button class="btn" type="submit">บันทึกใบสมัคร</button>
+      <button class="btn g" type="button" id="bReset">ล้างฟอร์ม</button>
+    </div>
+  </form>
+</section>
+</main>
+
+<div id="toast" role="status"></div>
+<div id="pdfbox"></div>
+
+<script>
+/* ===== ตั้งค่า: แก้ชื่อวิทยาลัยและรายการต่าง ๆ ตรงนี้ ===== */
+const CFG={
+  college:'วิทยาลัยเทคนิคท่าหลวงซีเมนต์ไทยอนุสรณ์',
+  levels:['ปวช.','ปวส.'],
+  depts:['ช่างยนต์','ช่างไฟฟ้ากำลัง','ช่างอิเล็กทรอนิกส์','ช่างกลโรงงาน','ช่างเชื่อมโลหะ','การบัญชี','การตลาด','เทคโนโลยีสารสนเทศ'],
+  sources:['ครูแนะแนว','เพื่อน/รุ่นพี่','Facebook / โซเชียล','ป้ายประชาสัมพันธ์','ผู้ปกครอง','อื่น ๆ'],
+  status:['รอตรวจสอบ','เอกสารไม่ครบ','ผ่านการคัดเลือก','มอบตัวแล้ว']
+};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const YR=new Date().getFullYear()+543;
+let apps=[];try{apps=JSON.parse(localStorage.getItem('apps')||'[]')}catch(e){}
+let editId=null,photo='',charts={};
+const save=()=>{try{localStorage.setItem('apps',JSON.stringify(apps))}catch(e){toast('พื้นที่จัดเก็บเต็ม ลองสำรองข้อมูลแล้วลบรายการเก่า')}};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600)};
+const thDate=d=>d?new Date(d).toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'}):'-';
+const full=a=>`${a.prefix}${a.fname} ${a.lname}`;
+const opts=(el,arr,all)=>{el.innerHTML=(all?`<option value="">${all}</option>`:'')+arr.map(x=>`<option>${esc(x)}</option>`).join('')};
+
+/* ===== เมนู ===== */
+$('#brandSub').textContent=`ปีการศึกษา ${YR}`;
+function go(v){$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('aside [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));if(v==='dash')dash();if(v==='list')list();if(v==='form'&&editId===null)clearForm();scrollTo(0,0)}
+$$('aside [data-v]').forEach(b=>b.onclick=()=>{if(b.dataset.v==='form')editId=null;go(b.dataset.v)});
+
+/* ===== แดชบอร์ด ===== */
+const PAL=['#4d8dff','#f2b632','#2ee6a6','#ff6b6b','#a78bfa','#22d3ee','#fb923c','#94a3b8'];
+function mk(id,cfg){charts[id]?.destroy();charts[id]=new Chart($('#'+id),cfg)}
+function cnt(key,keys){return keys.map(k=>apps.filter(a=>a[key]===k).length)}
+function dash(){
+  const n=apps.length,st=cnt('status',CFG.status);
+  $('#dsub').textContent=n?`อัปเดตล่าสุด ${new Date().toLocaleString('th-TH')}`:'ยังไม่มีข้อมูล กรอกใบสมัครแรก หรือโหลดข้อมูลตัวอย่างจากเมนูซ้าย';
+  $('#kpis').innerHTML=`<div class="card kpi hero"><b>${n}</b><span>ผู้สมัครทั้งหมด</span></div>`+
+    CFG.status.map((s,i)=>`<div class="card kpi"><b>${st[i]}</b><span>${s}</span></div>`).join('');
+  Chart.defaults.font.family="'IBM Plex Sans Thai',sans-serif";Chart.defaults.color='#8e9ccb';Chart.defaults.borderColor='#202e66';
+  const dv=cnt('dept',CFG.depts);
+  mk('cDept',{type:'bar',data:{labels:CFG.depts,datasets:CFG.levels.map((l,i)=>({label:l,backgroundColor:PAL[i],borderRadius:6,data:CFG.depts.map(d=>apps.filter(a=>a.dept===d&&a.level===l).length)}))},
+    options:{indexAxis:'y',maintainAspectRatio:false,scales:{y:{stacked:true,grid:{display:false}},x:{stacked:true,beginAtZero:true,ticks:{precision:0}}},plugins:{legend:{position:'bottom'}}}});
+  mk('cStat',{type:'doughnut',data:{labels:CFG.status,datasets:[{data:st,backgroundColor:['#f2b632','#ff6b6b','#4d8dff','#2ee6a6'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom'}}}});
+  const days=[...Array(14)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-13+i);return d.toISOString().slice(0,10)});
+  mk('cDay',{type:'line',data:{labels:days.map(d=>d.slice(8)+'/'+d.slice(5,7)),datasets:[{label:'ผู้สมัคร',data:days.map(d=>apps.filter(a=>a.createdAt.slice(0,10)===d).length),borderColor:'#f2b632',backgroundColor:'#f2b63222',fill:true,tension:.35,pointRadius:3}]},options:{maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}},plugins:{legend:{display:false}}}});
+  mk('cLvl',{type:'doughnut',data:{labels:CFG.levels,datasets:[{data:cnt('level',CFG.levels),backgroundColor:['#4d8dff','#f2b632'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom'}}}});
+}
+
+/* ===== รายชื่อ ===== */
+opts($('#fLvl'),CFG.levels,'ทุกระดับชั้น');opts($('#fDept'),CFG.depts,'ทุกแผนก');opts($('#fSt'),CFG.status,'ทุกสถานะ');
+['q','fLvl','fDept','fSt'].forEach(i=>$('#'+i).oninput=list);
+function list(){
+  const q=$('#q').value.trim(),l=$('#fLvl').value,d=$('#fDept').value,s=$('#fSt').value;
+  const r=apps.filter(a=>(!q||(full(a)+a.cid+a.no).includes(q))&&(!l||a.level===l)&&(!d||a.dept===d)&&(!s||a.status===s));
+  $('#tb').innerHTML=r.length?r.map(a=>`<tr><td>${a.no}</td><td><b>${esc(full(a))}</b></td><td>${a.level}</td><td>${esc(a.dept)}</td><td>${esc(a.school)}</td>
+  <td><select data-st="${a.id}" class="tag s${CFG.status.indexOf(a.status)}">${CFG.status.map(x=>`<option${x===a.status?' selected':''}>${x}</option>`).join('')}</select></td>
+  <td><button class="btn sm o" data-pdf="${a.id}">PDF</button> <button class="btn sm g" data-ed="${a.id}">แก้ไข</button> <button class="btn sm g" data-del="${a.id}">ลบ</button></td></tr>`).join('')
+  :`<tr><td colspan="7" class="empty">ไม่พบรายการ</td></tr>`;
+}
+$('#tb').onclick=e=>{const t=e.target;
+  if(t.dataset.pdf)pdf(t.dataset.pdf);
+  if(t.dataset.ed)openForm(t.dataset.ed);
+  if(t.dataset.del&&confirm('ลบใบสมัครนี้ใช่หรือไม่?')){apps=apps.filter(a=>a.id!==t.dataset.del);save();list();toast('ลบใบสมัครแล้ว')}};
+$('#tb').onchange=e=>{const id=e.target.dataset.st;if(!id)return;apps.find(a=>a.id===id).status=e.target.value;save();list();toast('เปลี่ยนสถานะแล้ว')};
+
+/* ===== ฟอร์ม ===== */
+const F=$('#f');
+opts(F.level,CFG.levels);opts(F.dept,CFG.depts);opts(F.source,CFG.sources);
+const BLANK="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+function clearForm(){F.reset();photo='';$('#pimg').src=BLANK;editId=null;$('#ftitle').textContent='กรอกใบสมัคร';$$('.err').forEach(e=>e.textContent='')}
+$('#bReset').onclick=clearForm;
+function openForm(id){const a=apps.find(x=>x.id===id);go('form');editId=id;
+  [...F.elements].forEach(el=>{if(el.name&&a[el.name]!==undefined)el.value=a[el.name]});
+  photo=a.photo||'';$('#pimg').src=photo||BLANK;$('#ftitle').textContent='แก้ไขใบสมัคร '+a.no}
+$('#pfile').onchange=e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>3e6){toast('ไฟล์ใหญ่เกิน 3 MB');e.target.value='';return}
+  const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),k=Math.min(1,360/img.height);c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);photo=c.toDataURL('image/jpeg',.82);$('#pimg').src=photo};img.src=URL.createObjectURL(f)};
+const cidOk=v=>{if(!/^\d{13}$/.test(v))return false;let s=0;for(let i=0;i<12;i++)s+=v[i]*(13-i);return (11-s%11)%10==v[12]};
+function check(){let ok=true;const rule={
+  fname:v=>v?'':'กรุณากรอกชื่ะ',lname:v=>v?'':'กรุณากรอกนามสกุล',school:v=>v?'':'กรุณากรอกสถานศึกษาเดิม',
+  cid:v=>cidOk(v)?'':'เลขบัตรประชาชนไม่ถูกต้อง (ต้อง 13 หลักและเลขตรวจสอบถูกต้อง)',
+  tel:v=>/^0\d{9}$/.test(v)?'':'เบอร์โทรต้องเป็นตัวเลข 10 หลัก ขึ้นต้นด้วย 0',
+  dob:v=>v&&v<new Date().toISOString().slice(0,10)?'':'กรุณาเลือกวันเกิดให้ถูกต้อง'};
+  rule.fname=v=>v?'':'กรุณากรอกชื่อ';
+  for(const k in rule){const el=F[k],m=rule[k](el.value.trim());el.parentNode.querySelector('.err').textContent=m;if(m)ok=false}
+  return ok}
+F.onsubmit=e=>{e.preventDefault();
+  if(!check()){toast('กรุณาตรวจสอบข้อมูลที่ขึ้นสีแดง');return}
+  const d={};[...F.elements].forEach(el=>{if(el.name)d[el.name]=el.value.trim()});
+  if(apps.some(a=>a.cid===d.cid&&a.id!==editId)){F.cid.parentNode.querySelector('.err').textContent='เลขบัตรนี้สมัครแล้ว';return}
+  d.photo=photo;
+  if(editId){Object.assign(apps.find(a=>a.id===editId),d);toast('บันทึกการแก้ไขแล้ว')}
+  else{const n=apps.length+1;apps.unshift({...d,id:Date.now()+'',no:`${YR}-${String(n).padStart(4,'0')}`,status:CFG.status[0],createdAt:new Date().toISOString()});toast('บันทึกใบสมัครแล้ว')}
+  save();editId=null;clearForm();go('list')};
+
+/* ===== PDF รายบุคคล ===== */
+function pdf(id){const a=apps.find(x=>x.id===id);
+  const row=(k,v)=>`<tr><th>${k}</th><td>${esc(v)||'-'}</td></tr>`;
+  $('#pdfbox').innerHTML=`<div class="doc" id="doc" style="position:relative">
+  <div class="ph">${a.photo?`<img src="${a.photo}">`:'ติดรูปถ่าย<br>1 นิ้ว'}</div>
+  <p class="c"><b>${esc(CFG.college)}</b></p><h2>ใบสมัครเข้าศึกษา ปีการศึกษา ${YR}</h2>
+  <p class="c" style="font-size:13px">เลขที่ใบสมัคร ${a.no} · วันที่สมัคร ${thDate(a.createdAt)}</p>
+  <table style="margin-top:50px;width:100%;border-collapse:collapse">
+  ${row('ระดับชั้นที่สมัคร',a.level)}${row('แผนกวิชา',a.dept)}${row('ชื่อ-นามสกุล',full(a))}${row('เลขบัตรประชาชน',a.cid.replace(/(\d)(\d{4})(\d{5})(\d{2})(\d)/,'$1-$2-$3-$4-$5'))}
+  ${row('วัน เดือน ปีเกิด',thDate(a.dob))}${row('เบอร์โทรศัพท์',a.tel)}${row('ที่อยู่ตามทะเบียนบ้าน',a.addr)}${row('จังหวัด',a.prov)}
+  ${row('สถานศึกษาเดิม',a.school)}${row('เกรดเฉลี่ยสะสม',a.gpa)}${row('ผู้ปกครอง',[a.gname,a.grel&&`(${a.grel})`].filter(Boolean).join(' '))}${row('เบอร์ผู้ปกครอง',a.gtel)}
+  ${row('ช่องทางที่รู้จักวิทยาลัย',a.source)}${row('สถานะ',a.status)}</table>
+  <p style="margin-top:16px;font-size:13px">ข้าพเจ้าขอรับรองว่าข้อความข้างต้นเป็นความจริงทุกประการ</p>
+  <div class="sig"><div>ลงชื่อ ......................................<br>( ${esc(full(a))} )<br>ผู้สมัคร</div><div>ลงชื่อ ......................................<br>( ...................................... )<br>เจ้าหน้าที่ผู้รับสมัคร</div></div></div>`;
+  toast('กำลังสร้าง PDF…');
+  html2pdf().set({margin:0,filename:`ใบสมัคร_${a.no}_${a.fname}.pdf`,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'mm',format:'a4'}}).from($('#doc')).save().then(()=>{toast('ดาวน์โหลด PDF แล้ว');$('#pdfbox').innerHTML=''})}
+
+/* ===== CSV / สำรอง / ตัวอย่าง ===== */
+$('#bCsv').onclick=()=>{const h=['เลขที่','คำนำหน้า','ชื่อ','นามสกุล','เลขบัตร','วันเกิด','เบอร์โทร','ระดับ','แผนก','โรงเรียนเดิม','จังหวัด','GPA','สถานะ'];
+  const r=apps.map(a=>[a.no,a.prefix,a.fname,a.lname,"'"+a.cid,a.dob,a.tel,a.level,a.dept,a.school,a.prov,a.gpa,a.status].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(','));
+  dl('\ufeff'+[h.join(','),...r].join('\n'),'applicants.csv','text/csv')};
+function dl(t,n,m){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click()}
+$('#bBackup').onclick=()=>dl(JSON.stringify(apps),'backup.json','application/json');
+$('#bRestore').onclick=()=>$('#fRestore').click();
+$('#fRestore').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!Array.isArray(d))throw 0;apps=d;save();go('dash');toast('นำเข้าข้อมูลแล้ว')}catch(x){toast('ไฟล์ไม่ถูกต้อง')}})};
+$('#bSeed').onclick=()=>{if(apps.length&&!confirm('เพิ่มข้อมูลตัวอย่างต่อท้ายข้อมูลเดิม?'))return;
+  const fn=['สมชาย','วิภา','ธนากร','พิมพ์ชนก','อนุชา','กานดา','ภูริช','ณัฐธิดา','ศุภชัย','รัตนา'],ln=['ใจดี','สุขสวัสดิ์','มั่นคง','แก้วมณี','ศรีสุข','บุญมา'],sc=['โรงเรียนบ้านโพธิ์','โรงเรียนวัดสระแก้ว','โรงเรียนเทพศิรินทร์','โรงเรียนสามัคคีวิทยา'];
+  const mkid=i=>{let b=String(1100000000000+i*7919).slice(0,12),s=0;for(let k=0;k<12;k++)s+=b[k]*(13-k);return b+(11-s%11)%10};
+  for(let i=0;i<40;i++){const d=new Date();d.setDate(d.getDate()-Math.floor(Math.random()*14));const lv=i%3?CFG.levels[0]:CFG.levels[1];
+    apps.push({id:'s'+Date.now()+i,no:`${YR}-${String(apps.length+1).padStart(4,'0')}`,prefix:i%2?'นางสาว':'นาย',fname:fn[i%10],lname:ln[i%6]+(i>9?i:''),cid:mkid(i+50000),dob:'2009-0'+(1+i%9)+'-1'+(i%9),tel:'08'+String(10000000+i*131071).slice(0,8),
+    level:lv,dept:CFG.depts[(i*5+i%3)%8],school:sc[i%4],prov:'ลพบุรี',gpa:(2+Math.random()*2).toFixed(2),addr:'',gname:'',grel:'',gtel:'',source:CFG.sources[i%6],photo:'',
+    status:CFG.status[i%4],createdAt:d.toISOString()})}
+  save();go('dash');toast('โหลดข้อมูลตัวอย่าง 40 รายการแล้ว')};
+
+dash();
+</script>
+</body>
+</html>
